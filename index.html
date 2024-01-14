@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Babylon.js VR Cube</title>
+
+  <script src="https://cdn.babylonjs.com/babylon.js"></script>
+
+  <button id="vrButton">Enter VR</button>
+</head>
+<body>
+  <script>
+    window.addEventListener('webXRInitialized', () => {
+      const engine = new BABYLON.Engine(document.getElementById('container'), true);
+      engine.registerWebXRSupport(true); // <-- Add this line
+
+      const scene = new BABYLON.Scene(engine);
+
+      // Create a 1 meter cube
+      const cube = new BABYLON.Mesh('cube', { size: 1 }, scene);
+      cube.position.set(0, 0, -2); // Position the cube 2 meters away from the user
+
+      // Create a camera to view the scene
+      const camera = new BABYLON.ArcRotateCamera('camera', 0, 45, 10, scene);
+      camera.position.set(0, -2, 10); // Position the camera above the cube
+
+      // Create a "VR" button to enter VR mode
+      const vrButton = document.getElementById('vrButton');
+      vrButton.addEventListener('click', () => {
+        scene.createDefaultXRExperienceAsync().then(() => {
+          babylonEngine.runRenderLoop(() => {
+            scene.render();
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>
